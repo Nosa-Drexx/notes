@@ -1,6 +1,6 @@
 import { nanoid } from "nanoid";
 
-const initialState: GlobalState = {
+export const initialState: GlobalState = {
   notes: [{ note: "trial", deleted: false, id: nanoid(), stared: false }],
   trash: [],
   stared: [],
@@ -30,7 +30,7 @@ const changeAndPushHelper = <T extends NoteObjType>(
   return [sortedArray, residueArray] as const;
 };
 
-const reducer = (
+export const reducer = (
   state: GlobalState = initialState,
   action: ActionType
 ): GlobalState => {
@@ -133,5 +133,3 @@ const reducer = (
   }
   return state;
 };
-
-export default reducer;
