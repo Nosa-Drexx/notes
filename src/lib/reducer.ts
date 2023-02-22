@@ -78,8 +78,18 @@ export const reducer = (
     const trashArray = [...sortedArray];
     const newNote = [...residueArray];
 
+    const helper = <T extends NoteObjType>(array: NoteObjType[]): T[] => {
+      const data = [];
+      for (let i = 0; i < array.length; i++) {
+        if (array[i].stared === true) data.push(array[i]);
+      }
+      return data as T[];
+    };
+    const newStared = helper<NoteObjTypeStared>(residueArray);
+
     return {
       ...state,
+      stared: newStared,
       notes: newNote,
       trash: [...trashArray, ...state.trash],
     };

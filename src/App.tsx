@@ -1,4 +1,5 @@
 // import "./App.css";
+import React from "react";
 import useContextHook from "./lib/useContextHook";
 
 function App() {
@@ -11,7 +12,13 @@ function App() {
   //   },
   // });
 
-  return <div className="App"></div>;
+  return (
+    <div className="App">
+      {React.Children.toArray(
+        useContextGen.state.notes.map((elem) => <p>{elem.note}</p>)
+      )}
+    </div>
+  );
 }
 
 export default App;
