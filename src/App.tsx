@@ -1,22 +1,27 @@
 // import "./App.css";
 import React from "react";
-import useContextHook from "./lib/useContextHook";
+import AddNotes from "./components/addNotes";
+import Notes from "./components/notes";
+import Stared from "./components/stared";
+import Trash from "./components/trash";
+// import useContextHook from "./lib/useContextHook";
 
 function App() {
-  const { useContextGen } = useContextHook();
+  // const { useContextGen } = useContextHook();
 
-  // useContextGen.dispatch({
-  //   type: "add",
-  //   payload: {
-  //     details: "me",
-  //   },
-  // });
+  // // useContextGen.dispatch({
+  // //   type: "add",
+  // //   payload: {
+  // //     details: "me",
+  // //   },
+  // // });
 
   return (
     <div className="App">
-      {React.Children.toArray(
-        useContextGen.state.notes.map((elem) => <p>{elem.note}</p>)
-      )}
+      <AddNotes />
+      <Notes />
+      <Stared />
+      <Trash />
     </div>
   );
 }

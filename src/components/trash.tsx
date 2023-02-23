@@ -1,7 +1,7 @@
 import React from "react";
 import useContextHook from "../lib/useContextHook";
 
-const Notes = () => {
+const Trash = () => {
   const { useContextGen } = useContextHook();
   const { state, dispatch } = useContextGen;
   return (
@@ -13,9 +13,18 @@ const Notes = () => {
             <div data-id={elem.id}>
               <button
                 onClick={() =>
+                  dispatch({ type: "restore", payload: { id: elem.id } })
+                }
+              >
+                Restore
+              </button>
+              <button
+                onClick={() =>
                   dispatch({ type: "delete", payload: { id: elem.id } })
                 }
-              ></button>
+              >
+                Delete
+              </button>
             </div>
           </div>
         ))
@@ -24,4 +33,4 @@ const Notes = () => {
   );
 };
 
-export default Notes;
+export default Trash;

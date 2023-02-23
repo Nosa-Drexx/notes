@@ -6,6 +6,7 @@ export const initialState: GlobalState = {
   stared: [],
 };
 
+//Changes the boolean value of key decleared and  return seperated changed and unchanged values
 const changeAndPushHelper = <T extends NoteObjType>(
   array: NoteObjType[],
   check: string,
@@ -30,10 +31,21 @@ const changeAndPushHelper = <T extends NoteObjType>(
   return [sortedArray, residueArray] as const;
 };
 
+//helper to separate stared notes
+const helper = <T extends NoteObjType>(array: NoteObjType[]): T[] => {
+  const data = [];
+  for (let i = 0; i < array.length; i++) {
+    if (array[i].stared === true) data.push(array[i]);
+  }
+  return data as T[];
+};
+
+//REDUCER
 export const reducer = (
   state: GlobalState = initialState,
   action: ActionType
 ): GlobalState => {
+  //Add new note
   if (action.type === "add") {
     const { details } = action.payload;
     const searchForDuplicate = state.notes.find(
@@ -53,9 +65,17 @@ export const reducer = (
           ],
         };
   }
+
+  //Edit previous note
   if (action.type === "edit") {
     const { id, update } = action.payload;
     const updateNotes = state.notes.map((data) => {
+      if (data.id === id) {
+        data.note = update;
+      }
+      return data;
+    });
+    const updateStared = state.stared.map((data) => {
       if (data.id === id) {
         data.note = update;
       }
@@ -65,8 +85,11 @@ export const reducer = (
     return {
       ...state,
       notes: updateNotes,
+      stared: updateStared,
     };
   }
+
+  //delete note temporarily to trash
   if (action.type === "trash") {
     const { id } = action.payload;
     const [sortedArray, residueArray] = changeAndPushHelper<NoteObjTypeTrash>(
@@ -78,13 +101,6 @@ export const reducer = (
     const trashArray = [...sortedArray];
     const newNote = [...residueArray];
 
-    const helper = <T extends NoteObjType>(array: NoteObjType[]): T[] => {
-      const data = [];
-      for (let i = 0; i < array.length; i++) {
-        if (array[i].stared === true) data.push(array[i]);
-      }
-      return data as T[];
-    };
     const newStared = helper<NoteObjTypeStared>(residueArray);
 
     return {
@@ -94,6 +110,28 @@ export const reducer = (
       trash: [...trashArray, ...state.trash],
     };
   }
+
+  // restore deleted note in trash
+  if (action.type === "restore") {
+    const { id } = action.payload;
+    const [sortedArray, residueArray] = changeAndPushHelper<NoteObjTypeTrash>(
+      state.trash,
+      id,
+      "deleted",
+      []
+    );
+    const newNotes = [...sortedArray, ...state.notes];
+    const newStared = helper<NoteObjTypeStared>(sortedArray);
+
+    return {
+      ...state,
+      notes: newNotes,
+      stared: [...newStared, ...state.stared],
+      trash: [...residueArray],
+    };
+  }
+
+  // star note
   if (action.type === "star") {
     const { id } = action.payload;
     const [sortedArray] = changeAndPushHelper<NoteObjTypeStared>(
@@ -103,12 +141,21 @@ export const reducer = (
       []
     );
     const staredArray = [...sortedArray];
+    const newNotes = state.notes.map((elem) => {
+      if (elem.id === id) {
+        return { ...elem, stared: true };
+      }
+      return elem;
+    });
 
     return {
       ...state,
+      notes: newNotes,
       stared: [...staredArray, ...state.stared],
     };
   }
+
+  //unstar note
   if (action.type === "unstar") {
     const { id } = action.payload;
     const [, residueArray] = changeAndPushHelper<NoteObjTypeStared>(
@@ -128,10 +175,11 @@ export const reducer = (
     return {
       ...state,
       notes: newNotes,
-      stared: [...staredArray, ...state.stared],
+      stared: [...staredArray],
     };
   }
 
+  // delete note completely
   if (action.type === "delete") {
     const { id } = action.payload;
     const newTrash = state.trash.filter((elem) => elem.id !== id);

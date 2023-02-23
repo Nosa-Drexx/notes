@@ -1,11 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import useContextHook from "../lib/useContextHook";
+import InputField from "./InputField";
 
-const Notes = () => {
+const Stared = () => {
   const { useContextGen } = useContextHook();
   const { state, dispatch } = useContextGen;
+  const [edit, setEdit] = useState({ id: "", data: "", show: false });
+
   return (
     <section>
+      {edit.show && (
+        <InputField
+          id={edit.id}
+          data={edit.data}
+          type={"edit"}
+          setClose={setEdit}
+        ></InputField>
+      )}
       {React.Children.toArray(
         state.stared.map((elem) => (
           <div>
@@ -15,12 +26,23 @@ const Notes = () => {
                 onClick={() =>
                   dispatch({ type: "unstar", payload: { id: elem.id } })
                 }
-              ></button>
+              >
+                Unstar
+              </button>
+              <button
+                onClick={() =>
+                  setEdit({ id: elem.id, data: elem.note, show: true })
+                }
+              >
+                Edit
+              </button>
               <button
                 onClick={() =>
                   dispatch({ type: "trash", payload: { id: elem.id } })
                 }
-              ></button>
+              >
+                Trash
+              </button>
             </div>
           </div>
         ))
@@ -29,4 +51,4 @@ const Notes = () => {
   );
 };
 
-export default Notes;
+export default Stared;
