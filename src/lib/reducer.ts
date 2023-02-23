@@ -48,6 +48,9 @@ export const reducer = (
   //Add new note
   if (action.type === "add") {
     const { details } = action.payload;
+    // Don't allow empty string
+    if (details === "" || details === " ") return state;
+
     const searchForDuplicate = state.notes.find(
       (data) => data.note === details
     );
@@ -69,6 +72,9 @@ export const reducer = (
   //Edit previous note
   if (action.type === "edit") {
     const { id, update } = action.payload;
+    // Don't allow empty string
+    if (update === "" || update === " ") return state;
+
     const updateNotes = state.notes.map((data) => {
       if (data.id === id) {
         data.note = update;

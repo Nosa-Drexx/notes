@@ -20,6 +20,7 @@ const InputField = ({ id, data, type, setClose }: InputFieldProps) => {
 
   return (
     <form
+      className=" flex flex-col flex-nowrap w-screen h-screen absolute z-40 bg-white"
       onSubmit={(e) => {
         e.preventDefault();
         if (type === "edit") {
@@ -43,18 +44,23 @@ const InputField = ({ id, data, type, setClose }: InputFieldProps) => {
         setClose((prev) => ({ ...prev, show: false }));
       }}
     >
-      <label htmlFor="text-area">
+      <label htmlFor="sumbit-btn" className="h-auto w-screen bg-gray-100 ">
+        <button
+          id="submit-btn"
+          type="submit"
+          className="text-2xl bg-green-300 p-1 px-2"
+        >
+          Update
+        </button>
+      </label>
+      <label htmlFor="text-area" className="h-full w-screen">
         <textarea
           id="text-area"
           value={state}
           onChange={(e) => setState(e.target.value)}
           placeholder="Input or Edit note"
+          className="w-full h-full p-2 text-2xl resize-none bg-yellow-200"
         ></textarea>
-      </label>
-      <label htmlFor="sumbit-btn">
-        <button id="submit-btn" type="submit">
-          Submit
-        </button>
       </label>
     </form>
   );

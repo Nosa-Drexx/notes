@@ -1,27 +1,18 @@
-// import "./App.css";
-import React from "react";
-import AddNotes from "./components/addNotes";
-import Notes from "./components/notes";
-import Stared from "./components/stared";
-import Trash from "./components/trash";
-// import useContextHook from "./lib/useContextHook";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import NotePage from "./Pages/NotePage";
+import StaredPage from "./Pages/StaredPage";
+import TrashPage from "./Pages/TrashPage";
 
 function App() {
-  // const { useContextGen } = useContextHook();
-
-  // // useContextGen.dispatch({
-  // //   type: "add",
-  // //   payload: {
-  // //     details: "me",
-  // //   },
-  // // });
-
   return (
     <div className="App">
-      <AddNotes />
-      <Notes />
-      <Stared />
-      <Trash />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<NotePage />} />
+          <Route path="/stared" element={<StaredPage />} />
+          <Route path="/trash" element={<TrashPage />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
