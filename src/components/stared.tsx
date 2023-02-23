@@ -8,7 +8,7 @@ const Stared = () => {
   const [edit, setEdit] = useState({ id: "", data: "", show: false });
 
   return (
-    <section>
+    <section className="flex flex-col flex-nowrap items-center gap-10 pt-10">
       {edit.show && (
         <InputField
           id={edit.id}
@@ -17,35 +17,44 @@ const Stared = () => {
           setClose={setEdit}
         ></InputField>
       )}
-      {React.Children.toArray(
-        state.stared.map((elem) => (
-          <div className="w-full max-w-3xl h-auto shadow-sm p-2">
-            {elem.note}
-            <div data-id={elem.id}>
-              <button
-                onClick={() =>
-                  dispatch({ type: "unstar", payload: { id: elem.id } })
-                }
+      {state.stared.length === 0 ? (
+        <div className="text-5xl w-full h-full flex items-center justify-center text-gray-300 ">
+          <span> No Stared Note</span>
+        </div>
+      ) : (
+        React.Children.toArray(
+          state.stared.map((elem) => (
+            <div className="w-full max-w-4xl h-auto shadow-lg p-4 rounded-xl text-xl">
+              {elem.note}
+              <div
+                data-id={elem.id}
+                className="flex gap-4 justify-end pl-3 pr-3"
               >
-                Unstar
-              </button>
-              <button
-                onClick={() =>
-                  setEdit({ id: elem.id, data: elem.note, show: true })
-                }
-              >
-                Edit
-              </button>
-              <button
-                onClick={() =>
-                  dispatch({ type: "trash", payload: { id: elem.id } })
-                }
-              >
-                Trash
-              </button>
+                <button
+                  onClick={() =>
+                    dispatch({ type: "unstar", payload: { id: elem.id } })
+                  }
+                >
+                  <i className="fa-solid fa-star text-yellow-300"></i>
+                </button>
+                <button
+                  onClick={() =>
+                    setEdit({ id: elem.id, data: elem.note, show: true })
+                  }
+                >
+                  <i className="fa-solid fa-pen-to-square text-cyan-400"></i>
+                </button>
+                <button
+                  onClick={() =>
+                    dispatch({ type: "trash", payload: { id: elem.id } })
+                  }
+                >
+                  <i className="fa-solid fa-trash text-gray-300"></i>
+                </button>
+              </div>
             </div>
-          </div>
-        ))
+          ))
+        )
       )}
     </section>
   );
