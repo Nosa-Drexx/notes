@@ -19,7 +19,7 @@ const Stared = () => {
       )}
       {React.Children.toArray(
         state.stared.map((elem) => (
-          <div>
+          <div className="w-full max-w-3xl h-auto shadow-sm p-2">
             {elem.note}
             <div data-id={elem.id}>
               <button

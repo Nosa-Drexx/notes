@@ -20,7 +20,7 @@ const InputField = ({ id, data, type, setClose }: InputFieldProps) => {
 
   return (
     <form
-      className=" flex flex-col flex-nowrap w-screen h-screen absolute z-40 bg-white"
+      className=" flex flex-col flex-nowrap w-screen h-screen absolute z-40 top-0 bg-white"
       onSubmit={(e) => {
         e.preventDefault();
         if (type === "edit") {
