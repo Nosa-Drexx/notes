@@ -1,4 +1,4 @@
-# Getting Started with Create React App
+# Note
 
 built with React, Typescript and SCSS
 
